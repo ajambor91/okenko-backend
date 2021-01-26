@@ -5,11 +5,11 @@ const mainController = new MainController();
 export = router
 .get('/test', (req: Request, res: Response) => {
     console.log('router')
-    // mainController.main(req,res);
-    res.send('ddd')
+    mainController.get(req,res);
 })
 .get('/dupa',(req: Request, res: Response) => {
     console.log('router')
     mainController.main(req,res);
   
 })
+
