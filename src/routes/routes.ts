@@ -1,8 +1,14 @@
 import express, { Request, Response } from  'express';
 import {MainController} from '../controllers/main';
+import {JWTHelper} from '../jwt/jwt';
+import dotenv from 'dotenv';
 const router = express.Router();
 const mainController = new MainController();
+dotenv.config();
 export = router
+.get('/auth', JWTHelper.authorize, (req: Request, res: Response) => {
+    res.send('autoryzacja dziala');
+})
 .get('/test', (req: Request, res: Response) => {
     console.log('router')
     mainController.get(req,res);
@@ -11,5 +17,9 @@ export = router
     console.log('router')
     mainController.main(req,res);
   
+})
+.get('/login', (req: Request, res: Response) => {
+    mainController.login(req, res);
+
 })
 

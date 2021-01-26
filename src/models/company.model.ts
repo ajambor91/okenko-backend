@@ -5,6 +5,7 @@ export interface ICompany extends Document{
     company: string;
     kvk: string;
     mail: string;
+    password: string;
     phone: number;
     www?: string;
     logo?: string;
@@ -15,6 +16,7 @@ const companySchema: Schema = new Schema({
     company: {type: String, unique: true, required: true},
     kvk: {type: String, required: true},
     mail: {type: String, required: true, unique: true},
+    password: {type: String, required: true},
     phone: {type: Number, required: true, unique: true},
     www: {type: String, unique: true},
     logo: {type: String},
