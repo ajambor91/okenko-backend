@@ -7,6 +7,7 @@ class App{
     mongoose = mongoose;
     dbConfig = dbConfig;
     
+
     constructor() {
         this.connectToDb();   
         this.checkConnection();
