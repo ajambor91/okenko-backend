@@ -18,7 +18,7 @@ export interface IWorker extends Document {
     lang: LangEnum[];
 }
 
-const workerSchema: Schema = new Schema({
+const WorkerSchema: Schema = new Schema({
     company: { type: String, required: true },
     city: { type: String, required: true },
     kvk: { type: String, required: true },
@@ -33,4 +33,4 @@ const workerSchema: Schema = new Schema({
     lang: {type: Array, required: true}
 });
 
-export default mongoose.model<IWorker>('Worker', workerSchema);
+export default mongoose.model<IWorker>('Worker', WorkerSchema);

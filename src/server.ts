@@ -34,6 +34,7 @@ class App{
     }
 
     private listen(): void {
+        this.app.use(express.json());
         this.app.use('/', router);
         this.app.listen(3000, () => console.log('Example app listening on port 3000!'));
     }

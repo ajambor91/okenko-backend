@@ -12,15 +12,14 @@ export interface ICompany extends Document{
     description: IDescription['_id'];
 }
 
-const companySchema: Schema = new Schema({
+const CompanySchema: Schema = new Schema({
     company: {type: String, unique: true, required: true},
     kvk: {type: String, required: true},
     mail: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     phone: {type: Number, required: true, unique: true},
-    www: {type: String, unique: true},
+    www: {type: String, sparse: true},
     logo: {type: String},
     description: {type: Schema.Types.ObjectId}
 });
-
-export default mongoose.model<ICompany>('company', companySchema);
+export default mongoose.model<ICompany>('company', CompanySchema);

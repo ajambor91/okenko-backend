@@ -1,9 +1,12 @@
 import express, { Request, Response } from  'express';
 import {MainController} from '../controllers/main';
+import {SecurityController} from '../controllers/security.controller';
+
 import {JWTHelper} from '../jwt/jwt';
 import dotenv from 'dotenv';
 const router = express.Router();
 const mainController = new MainController();
+const securityController = new SecurityController();
 dotenv.config();
 export = router
 .get('/auth', JWTHelper.authorize, (req: Request, res: Response) => {
@@ -22,4 +25,7 @@ export = router
     mainController.login(req, res);
 
 })
+.post('/register', (req: Request, res: Response) => {
+    securityController.registerAccount(req, res);
+});
 
