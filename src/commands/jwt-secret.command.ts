@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import env from 'dotenv';
+
 class JWTSecret{
     
     token: string = null;

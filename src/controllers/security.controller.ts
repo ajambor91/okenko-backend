@@ -1,9 +1,10 @@
 import {Request, Response} from 'express';
+import { ILoginPaylod } from '../models/login-paylod.model';
 import { IRegister } from '../models/register.model';
 import {AuthorizationService} from '../services/authorization.service';
 export class SecurityController{
 
-    authorizationService: AuthorizationService;
+   private authorizationService: AuthorizationService;
     
     constructor() {
         this.authorizationService = new AuthorizationService();
@@ -17,9 +18,19 @@ export class SecurityController{
             else res.send('not');
         })
         .catch(err => {
-            console.log(err);
             res.send('nie dzia;a')
         });
+    }
 
+    loginUser(req: Request, res: Response): void {
+        const payload: ILoginPaylod = req.body;
+        this.authorizationService.loginUser(payload).then((result: string) => {
+            if (result != null) {
+                res.send(result);
+            }
+            else{
+                res.status(401).send('Unauthorized');
+            }
+        });
     }
 }

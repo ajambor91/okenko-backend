@@ -1,40 +1,42 @@
 import { AccountTypeEnum } from "../enums/account-type.enum";
-import CompanyModel, { ICompany } from "../models/company.model";
-import WorkerSchema, { IWorker } from "../models/worker.model";
+import { ICompany } from "../models/company.model";
+import { IWorker } from "../models/worker.model";
 import { IRegister } from "../models/register.model";
+import { SecurityRepository } from "../repository/security.repository";
+import { ILoginPaylod } from "../models/login-paylod.model";
+import { JWTHelper } from "../jwt/jwt";
 
 export class AuthorizationService {
     account: IRegister;
+    private securityRepository: SecurityRepository;
 
-    public registerAccount(account: IRegister): Promise<boolean> {
-        let test: Promise<boolean>;
+    constructor(){
+        this.securityRepository = new SecurityRepository();
+    }
+
+    async registerAccount(account: IRegister): Promise<boolean> {
+
         if (account.type === AccountTypeEnum.Company) {
             const companyData: ICompany = {} as ICompany;
             Object.assign(companyData, account);
-            console.log('assign', companyData)
-            return  this.createCompanyAccount(companyData);
+            return await this.securityRepository.createCompanyAccount(companyData);
+        } else if (account.type === AccountTypeEnum.Worker) { 
+            const workerData: IWorker = {} as IWorker;
+            Object.assign(workerData, account);
+            return await this.securityRepository.createWorkerAccount(workerData);
         }
-        // } else if (account.type === AccountTypeEnum.Worker){
-        //     const workerData: IWorker = {} as IWorker;
-        //     Object.assign(workerData, account);
-        //     // test = this.createWorkerAccount(workerData);
-        // }
     }
 
-    private createCompanyAccount(account: ICompany): Promise<boolean> {
-        const company = new CompanyModel(account);
-        return company.save().then(result => {
-            return true;
-        });
+    async loginUser(payload: ILoginPaylod): Promise<string> {
+        let account: IWorker | ICompany = await this.securityRepository.loginWorker(payload);
+        let type = AccountTypeEnum.Worker;
+        if(account == null){ 
+            account = await this.securityRepository.loginCompany(payload);
+            type = AccountTypeEnum.Company;
+        }
+        if( account != null){
+            return JWTHelper.login(account, type);
+        }
+        return null;
     }
-
-    // private createWorkerAccount(account: IWorker): boolean {
-    //     const worker = new WorkerSchema(account);
-    //     worker.save((err, company): b => {
-    //         if(err) return false;
-    //         return true;
-    //     });
-    //     return false;
-    // }
-
 }
