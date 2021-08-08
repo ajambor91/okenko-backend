@@ -1,5 +1,5 @@
 import mongoose, {Document, Schema} from 'mongoose';
-
+import { IWorker } from './worker.model';
 export interface IDescription extends Document {
     pl?: string;
     nl?: string;
